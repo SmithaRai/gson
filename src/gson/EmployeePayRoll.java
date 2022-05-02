@@ -3,6 +3,8 @@ package gson;
 import java.io.*;
 import java.util.*;
 
+import com.google.gson.Gson;
+
 
 public class EmployeePayRoll implements Serializable{
 	
@@ -80,6 +82,8 @@ public class EmployeePayRoll implements Serializable{
 			
 			Scanner in = new Scanner(System.in);	
 			EmployeePayRoll employee = new EmployeePayRoll();
+			//creating object of gson jar
+			Gson gson = new Gson();       
 			
 			File file = new File("E:\\eclipseworkspace\\employeepayroll\\Employee.txt");
 			file.createNewFile();
