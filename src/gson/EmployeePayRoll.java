@@ -4,36 +4,35 @@ import java.io.*;
 import java.util.*;
 
 import com.google.gson.Gson;
+import com.opencsv.CSVWriter;
 
 
-public class EmployeePayRoll implements Serializable{
+public class EmployeePayRoll {
 	
-		private  int id;
+		private  String id;
     	private  String name;
-		private  double salary;
-		
-		
-	    public int getId() {
-			return id;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		public double getSalary() {
-			return salary;
-		}
-		
+		private  String salary;
+		     
+		   public String getId() {
+				return id;
+			}
+			
+			public String getName() {
+				return name;
+			}
+			
+			public String getSalary() {
+				return salary;
+			}
+			
 		
 		static List<EmployeePayRoll> list = new ArrayList<>();
-		File file = new File("E:\\eclipseworkspace\\employeepayroll\\employee_directory\\Employee.txt");
-	    ObjectOutputStream oos = null;
+		
 		
 	     public EmployeePayRoll() {
 			// TODO Auto-generated constructor stub
 		}
-		public EmployeePayRoll(int id , String name , double salary) {
+		public EmployeePayRoll(String id , String name , String salary) {
 			// TODO Auto-generated constructor stub
 			this.id = id;
 			this.name = name ;
@@ -43,23 +42,31 @@ public class EmployeePayRoll implements Serializable{
 		public  void getdata() throws Exception, IOException
 	    {
 		 Scanner in = new Scanner(System.in);
+		 
+			File file = new File("Employee.csv");
+			FileWriter write = new FileWriter(file);
+			CSVWriter csv = new CSVWriter(write);
 
 		 System.out.println("ENTER NO.OF ENTRIES TO BE ENTERED : ");
 		 int n = in.nextInt();
 		 
+		 String header[] = {"id" , "name" , "salary" };
+		csv.writeNext(header);
+
 		     for(int i = 0 ; i < n; i++ )
 		     {  System.out.println("ENTER EMPLOYEE ID : ");
-		       id = in.nextInt();
+		       id = in.next();
 		       System.out.println("ENTER EMPLOYEE NAME : ");
 		       name = in.next();
 		       System.out.println("ENTER EMPLOYEE SALARY : ");
-		       salary = in.nextDouble(); 
-		       
-		      list.add(new EmployeePayRoll(id , name ,salary));
+		       salary = in.next(); 
+		      String data[] = { id , name ,salary };
+				csv.writeNext(data);
+
+		      list.add(new EmployeePayRoll(id , name ,salary));    
 		     }
-		      oos = new ObjectOutputStream(new FileOutputStream(file));
-	         oos.writeObject(list);
-	         oos.close();
+		     csv.flush();
+			csv.close();	    	
 	      }
 	   
 	   public void display()
@@ -82,18 +89,14 @@ public class EmployeePayRoll implements Serializable{
 			
 			Scanner in = new Scanner(System.in);	
 			EmployeePayRoll employee = new EmployeePayRoll();
-			//creating object of gson jar
-			Gson gson = new Gson();       
 			
-			File file = new File("E:\\eclipseworkspace\\employeepayroll\\Employee.txt");
-			file.createNewFile();
+					
+			File file = new File("Employee.csv");
+			FileWriter write = new FileWriter(file);
+			CSVWriter csv = new CSVWriter(write);
 		 
-			ObjectInputStream ois = null;
-			if(file.exists()== true) {
-				ois = new ObjectInputStream(new FileInputStream(file));
-				list = (ArrayList<EmployeePayRoll>)ois.readObject(); 
-				ois.close();
-				}
+			
+				
 			
 			System.out.println(" ");
 			int a ;
